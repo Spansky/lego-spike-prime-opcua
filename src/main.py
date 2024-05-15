@@ -6,10 +6,10 @@ from asyncua.common.methods import uamethod
 from signal import pause
 import logging
 import os
+import time
 
 from buildhat import Matrix, ForceSensor, Motor
 matrix_d = Matrix('D')
-matrix_d.set_pixel((0,0), (6, 9))
 force_a = ForceSensor('A')
 motor_c = Motor('C')
 
@@ -27,6 +27,14 @@ restconfig = {
     "port": os.getenv("REST_PORT", 8000),
     "host": os.getenv("REST_HOST", "0.0.0.0"),
 }
+
+def start_sequence(color):
+    for r in range(0,3):
+        for c in range(0,3):
+            matrix_d.set_pixel((r,c), (color, 5))
+            time.sleep(0.05)
+    motor_c.run_to_position(90, 20)
+    motor_c.run_to_position(0, 20)
 
 @uamethod
 def color_lightmatrix(parent, colorcode):
@@ -71,6 +79,7 @@ async def main():
     )
 
     _logger.info("Starting server!")
+    start_sequence(color=6)
     async with server:
         while True:
             await asyncio.sleep(0.5)
