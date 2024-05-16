@@ -1,4 +1,3 @@
-#!/home/leon/lego-spike-prime-opcua/.venv/bin/python
 import asyncio
 
 from asyncua import Server, ua
