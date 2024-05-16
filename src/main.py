@@ -1,10 +1,11 @@
 import asyncio
+import signal 
 import logging
 import os
 import time
+
 from asyncua import Server, ua
 from asyncua.common.methods import uamethod
-from signal import pause
 from buildhat import Matrix, ForceSensor, Motor
 
 # Connecting to the Lego Sensors
@@ -85,14 +86,25 @@ async def main():
     start_sequence(color=6)
 
     # We need to update the OPCUA tags 
-    # - propably there is a smoother way to do so
     async with server:
-        while True:
+        while not asyncio.get_running_loop().is_closed():
             await asyncio.sleep(0.5)
             force_val = force_a.get_force()
             await force.write_value(force_val)
 
+def shutdown(loop):
+    for task in asyncio.all_tasks(loop):
+        task.cancel()
+    loop.stop()
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    asyncio.run(main(), debug=True)
-    pause()
+    loop = asyncio.get_event_loop()
+
+    for sig in (signal.SIGINT, signal.SIGTERM):
+        loop.add_signal_handler(sig, shutdown, loop)
+    
+    try:
+        loop.run_until_complete(main())
+    finally:
+        loop.close()
