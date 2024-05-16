@@ -20,11 +20,6 @@ opcconfig = {
     "namespace": os.getenv("OPCUA_NAMESPACE", "http://pi301-lego.fritz.box")
 }
 
-restconfig = {
-    "port": os.getenv("REST_PORT", 8000),
-    "host": os.getenv("REST_HOST", "0.0.0.0"),
-}
-
 def start_sequence(color):
     for r in range(0,3):
         for c in range(0,3):
