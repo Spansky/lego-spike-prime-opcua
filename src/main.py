@@ -1,12 +1,10 @@
 import asyncio
-
-from asyncua import Server, ua
-from asyncua.common.methods import uamethod
-from signal import pause
 import logging
 import os
 import time
-
+from asyncua import Server, ua
+from asyncua.common.methods import uamethod
+from signal import pause
 from buildhat import Matrix, ForceSensor, Motor
 matrix_d = Matrix('D')
 force_a = ForceSensor('A')
