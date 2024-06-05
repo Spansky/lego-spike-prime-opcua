@@ -1,4 +1,5 @@
 import time
+import asyncio
 from buildhat import Matrix, ForceSensor, Motor
 
 # Connecting to the Lego Sensors
@@ -17,9 +18,9 @@ def get_force():
 def indicate_force():
     force_val = get_force()
     if force_val == 0:
-            matrix_d.level(0)
+        color_lightmatrix(3)
     elif 0 < force_val < 100:
-        matrix_d.level((force_val - 1) // 10)
+        color_lightmatrix(8)
     elif force_val == 100:
         color_lightmatrix(9)
 
@@ -32,7 +33,7 @@ def start_sequence(color):
     move_motor(90, 20)
     move_motor(0, 20)
 
-# color a 3x3 lightmatrix in one color 
+# Color a 3x3 light matrix in one color 
 def color_lightmatrix(colorcode):
     for r in range(0,3):
         for c in range(0,3):
@@ -40,3 +41,23 @@ def color_lightmatrix(colorcode):
 
 def move_motor(angle, speed): 
     motor_c.run_to_position(angle, speed)
+
+# Infinite loop to continuously indicate force
+async def run_indicate_force():
+    try:
+        while True:
+            indicate_force()
+            await asyncio.sleep(0.05)  # Delay to control the loop speed
+    except asyncio.CancelledError:
+        print("Force indication stopped.")
+
+# Main function to run tasks concurrently
+async def main():
+    await asyncio.ensure_future(
+        run_indicate_force()
+    )
+
+# Start the endless force indication process and OPCUA server
+if __name__ == "__main__":
+    asyncio.run(main())
+

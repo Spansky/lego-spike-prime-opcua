@@ -16,5 +16,6 @@ if __name__ == "__main__":
         loop.add_signal_handler(sig, shutdown, loop)
     try:
         loop.run_until_complete(opcuaserver.run())
+        loop.run_until_complete(station.main())
     finally:
         loop.close()
