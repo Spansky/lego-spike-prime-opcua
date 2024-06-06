@@ -40,33 +40,23 @@ def color_lightmatrix(colorcode):
             led_matrix.set_pixel((r,c), (colorcode, 9))
 
 def indicate_force_level(percentage :int):
+    if not (0 <= percentage <= 100):
+        raise ValueError("Percentage must be between 0 and 100.")
+
     color_neutral :str = ""
     color_meter :str = "green"
-    first_digit :int = percentage // 10
-    second_digit :int = percentage % 10
 
-    col :int = first_digit % 3
-    row :int = first_digit // 3 
+    filled_cells = int(percentage / 10)
 
-    for fill_up_row in range(0,row):
-        for col in range(0,3):
-            led_matrix.set_pixel((2-fill_up_row, col), (color_meter, 10))
-
-    for remaining_row in range(row, 3):
-        for col in range(0,3):
-            led_matrix.set_pixel((2-remaining_row, col), (color_neutral, 10))
-
-
-    #    for column in range(0,3):
-    #        print(f"row: {fill_up_row}, column: {column}")
-    #        led_matrix.set_pixel((fill_up_row,column),
-    #           (colorcode, 9))
-#    for fill_up_col in range(0, col):
-#        led_matrix.set_pixel((row + 1, fill_up_col), (colorcode, 9))
-#
-#    led_matrix.set_pixel((row + 1, col + 1),
-#                         (colorcode,
-#                         second_digit))
+    for i in range(9):
+        row = 2 - (i // 3) # reversed row index
+        col = i % 3
+        if i < filled_cells:
+            led_matrix.set_pixel((row, col),(color_meter, 10))
+        elif i == filled_cells and percentage % 10 != 0:
+            led_matrix.set_pixel((row, col),(color_meter, percentage % 10))
+        else:
+            led_matrix.set_pixel((row, col),(color_neutral, 0))
 
 def move_motor(angle, speed): 
     motor.run_to_position(angle, speed)
