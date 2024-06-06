@@ -59,5 +59,6 @@ async def main():
 
 # Start the endless force indication process and OPCUA server
 if __name__ == "__main__":
+    start_sequence(6)
     asyncio.run(main())
 
