@@ -67,10 +67,11 @@ async def run():
 
     # We need to update the OPCUA tags 
     async with server:
-        while not asyncio.get_running_loop().is_closed():
-            await asyncio.sleep(0.5)
+        while True:
+            await asyncio.sleep(0.1)
             await force.write_value(station.get_force())
-            station.indicate_force()
 
+if __name__ == "__main__":
+    asyncio.run(run())
 
 

@@ -1,4 +1,5 @@
 import opcuaserver
+import station
 import signal 
 import logging
 import asyncio
@@ -8,6 +9,12 @@ def shutdown(loop):
         task.cancel()
     loop.stop()
 
+async def main():
+    await asyncio.gather(
+        opcuaserver.run(),
+        station.run_indicate_force()
+    )
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     loop = asyncio.get_event_loop()
@@ -15,7 +22,6 @@ if __name__ == "__main__":
     for sig in (signal.SIGINT, signal.SIGTERM):
         loop.add_signal_handler(sig, shutdown, loop)
     try:
-        loop.run_until_complete(opcuaserver.run())
-        loop.run_until_complete(station.main())
+        loop.run_until_complete(main())
     finally:
         loop.close()
