@@ -13,7 +13,7 @@ opcconfig = {
     "protocol": os.getenv("OPCUA_PROTOCOL", "opc.tcp"),
     "endpoint": os.getenv("OPCUA_ENDPOINT", "freeopcua/server/"),
     "host": os.getenv("OPCUA_HOST", "0.0.0.0"),
-    "namespace": os.getenv("OPCUA_NAMESPACE", "http://pi301-lego.fritz.box")
+    "namespace": os.getenv("OPCUA_NAMESPACE", "localhost")
 }
 
 # Toggle the LED-Matrix when calling this OPCUA-Function
