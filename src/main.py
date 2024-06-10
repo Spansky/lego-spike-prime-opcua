@@ -1,5 +1,5 @@
 import opcuaserver
-import station
+from station import station
 import signal 
 import logging
 import asyncio
