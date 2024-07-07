@@ -58,31 +58,64 @@ async def run():
     station_status = await opc_obj.add_variable(idx, "station_status",
                                                 station.get_station_status())
 
+    # Defining the input arguments for the @uamethod 'color_lightmatrix'
+    in_arg_colorcode = ua.Argument()
+    in_arg_colorcode.Name = "colorcode"
+    in_arg_colorcode.DataType = ua.NodeId(ua.ObjectIds.Int64)
+    in_arg_colorcode.ValueRank = -1
+    in_arg_colorcode.ArrayDimensions = []
+    in_arg_colorcode.Description = ua.LocalizedText(
+            "The color code 0-9 of the LED-Matrix"
+            )
+
     # Linking of the predefined @uamethod 'color_lightmatrix'
     await server.nodes.objects.add_method(
         ua.NodeId("LightMatrix", idx),
         ua.QualifiedName("LightMatrix", idx),
         color_lightmatrix,
-        [ua.VariantType.Int64],
-        [ua.VariantType.Int64],
+        [in_arg_colorcode],
+        [],
     )
+
+    # Defining the input arguments for the @uamethod 'move_motor'
+    in_arg_engine_angle = ua.Argument()
+    in_arg_engine_angle.Name = "angle"
+    in_arg_engine_angle.DataType = ua.NodeId(ua.ObjectIds.Int64)
+    in_arg_engine_angle.ValueRank = -1
+    in_arg_engine_angle.ArrayDimensions = []
+    in_arg_engine_angle.Description = ua.LocalizedText("The angle of the engine")
+
+    in_arg_engine_speed = ua.Argument()
+    in_arg_engine_speed.Name = "speed"
+    in_arg_engine_speed.DataType = ua.NodeId(ua.ObjectIds.Int64)
+    in_arg_engine_speed.ValueRank = -1
+    in_arg_engine_speed.ArrayDimensions = []
+    in_arg_engine_speed.Description = ua.LocalizedText("The speed of the engine")
 
     # Linking of the predefined @uamethod 'move_motor'
     await server.nodes.objects.add_method(
         ua.NodeId("SetEngineAngle", idx),
         ua.QualifiedName("SetEngineAngle", idx),
         move_motor,
-        [ua.VariantType.Int64, ua.VariantType.Int64],
-        [ua.VariantType.Int64]
+        [in_arg_engine_angle, in_arg_engine_speed],
+        []
     )
+
+    # Defining the input arguments for the @uamethod 'set_force_upper_limit'
+    in_arg_force_limit = ua.Argument()
+    in_arg_force_limit.Name = "limit"
+    in_arg_force_limit.DataType = ua.NodeId(ua.ObjectIds.Int64)
+    in_arg_force_limit.ValueRank = -1
+    in_arg_force_limit.ArrayDimensions = []
+    in_arg_force_limit.Description = ua.LocalizedText("The upper limit 0 - 99 of the force")
 
     # Linking of the predefined @uamethod 'set_force_upper_limit'
     await server.nodes.objects.add_method(
         ua.NodeId("SetForceUpperLimit", idx),
         ua.QualifiedName("SetForceUpperLimit", idx),
         set_force_upper_limit,
-        [ua.VariantType.Int64],
-        [ua.VariantType.Int64]
+        [in_arg_force_limit],
+        []
     )
 
     # Linking of the predefined @uamethod 'reset_station_result'
