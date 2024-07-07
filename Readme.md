@@ -20,6 +20,8 @@ sudo apt install python3-build-hat
 # Clone this repo and run the OPCUA server & station logic
 git clone https://github.com/Spansky/lego-spike-prime-opcua.git 
 cd lego-spike-prime-opcua
+
+# Use the makefile to install and run the python project
 make run
 ```
 
