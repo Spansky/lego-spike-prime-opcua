@@ -67,13 +67,27 @@ async def run():
         [ua.VariantType.Int64],
     )
 
+    in_arg_engine_angle = ua.Argument()
+    in_arg_engine_angle.Name = "angle"
+    in_arg_engine_angle.DataType = ua.NodeId(ua.ObjectIds.Int64)
+    in_arg_engine_angle.ValueRank = -1
+    in_arg_engine_angle.ArrayDimensions = []
+    in_arg_engine_angle.Description = ua.LocalizedText("The angle of the engine")
+
+    in_arg_engine_speed = ua.Argument()
+    in_arg_engine_speed.Name = "speed"
+    in_arg_engine_speed.DataType = ua.NodeId(ua.ObjectIds.Int64)
+    in_arg_engine_speed.ValueRank = -1
+    in_arg_engine_speed.ArrayDimensions = []
+    in_arg_engine_speed.Description = ua.LocalizedText("The speed of the engine")
+
     # Linking of the predefined @uamethod 'move_motor'
     await server.nodes.objects.add_method(
         ua.NodeId("SetEngineAngle", idx),
         ua.QualifiedName("SetEngineAngle", idx),
         move_motor,
-        [ua.VariantType.Int64, ua.VariantType.Int64],
-        [ua.VariantType.Int64]
+        [in_arg_engine_angle, in_arg_engine_speed],
+        []
     )
 
     # Linking of the predefined @uamethod 'set_force_upper_limit'
