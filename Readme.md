@@ -40,7 +40,9 @@ In /src you will find following files:
     - opcuaserver
     - some station logic
 
-It accompanies a blog post that I wrote on LinkedIn.
+## Blog Post
+
+This repo accompanies a blog post that I wrote on LinkedIn.
 [Blog Post](https://www.linkedin.com/pulse/making-opcua-fun-lego-turning-complex-technology-leon-sczepansky-jrkee/)
 
 ...to be continued...
